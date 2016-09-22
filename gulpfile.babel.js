@@ -1,6 +1,7 @@
 'use strict';
 
 import gulp     from 'gulp';
+import webpack  from 'webpack-stream'; 
 import path     from 'path';
 import sync     from 'run-sequence';
 import browserSync    from 'browser-sync';
@@ -26,9 +27,17 @@ let paths = {
   output: root
 };
 
+<<<<<<< Updated upstream
 gulp.task('reload', done => {
   reload();
   done()
+=======
+// use webpack.config.js to build modules
+gulp.task('webpack', () => {
+  return gulp.src(paths.entry)
+    .pipe(webpack(require('./webpack.config')))
+    .pipe(gulp.dest(paths.output));
+>>>>>>> Stashed changes
 });
 
 gulp.task('serve', () => {
@@ -41,7 +50,16 @@ gulp.task('serve', () => {
 
 gulp.task('watch', ['serve'], () => {
   let allPaths = [].concat([paths.js], paths.html, [paths.styl]);
+<<<<<<< Updated upstream
   gulp.watch(allPaths, ['reload']);
 });
 
 gulp.task('default', ['watch']);
+=======
+  gulp.watch(allPaths, ['webpack', reload]);
+});
+
+gulp.task('default', (done) => {
+  sync('webpack','serve', 'watch', done);
+});
+>>>>>>> Stashed changes
